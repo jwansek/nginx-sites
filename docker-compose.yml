@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+    nginx:
+        image: nginx
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./conf.d/:/etc/nginx/conf.d/ 
+            - ./nginx.conf:/etc/nginx/nginx.conf
+            - /etc/apache2/.htpasswd:/etc/apache2/.htpasswd
+            - letsencrypt:/etc/letsencrypt
+        networks:
+            - klaus-net
+            - mariadb-net
+        external_links:
+            - edagay_edaweb_1:edagay
+    tunnel:
+        restart: unless-stopped
+        build:
+            context: ./ReverseSSHTunnel
+            dockerfile: Dockerfile
+        image: jwansek/reversesshtunnel
+        network_mode: host
+        volumes:
+            - /dev/tty:/dev/tty
+            - /home/eden/dotfiles/ssh_keys/london.pem:/app/vps.pem
+            - ./tunnel.conf:/app/tunnel.conf
+    certbot:
+        restart: unless-stopped
+        build:
+            context: ./certbot
+            dockerfile: Dockerfile
+        image: jwansek/autorecert
+        volumes:
+            - letsencrypt:/etc/letsencrypt/
+            - ./conf.d/:/etc/nginx/conf.d/
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        # having the same networks as the nginx container is nessicary so that nginx -t can be run
+        networks:
+            - klaus-net
+            - mariadb-net
+        external_links:
+            - edagay_edaweb_1:edagay
+
+
+networks:
+    klaus-net:
+        name: klaus_default
+        external: true
+    mariadb-net:
+        name: mariadb
+        external: true
+
+volumes:
+    letsencrypt:
