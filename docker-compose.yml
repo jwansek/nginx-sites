@@ -50,6 +50,20 @@ services:
         external_links:
             - edagay_edaweb_1:edagay
 
+    logger:
+        build: 
+            context: ./logger/
+            dockerfile: Dockerfile
+        image: jwansek/logger
+        restart: unless-stopped
+        volumes:
+            - logs:/logs/
+            - /media/DatabaseBackups/access_logs/:/access_logs/
+        networks:
+            - db-network
+        external_links:
+            - mariadb:mysql
+
 networks:
     klaus-net:
         name: klaus_default
@@ -62,6 +76,9 @@ networks:
         external: true
     edaweb-net:
         name: edaweb-net
+        external: true
+    db-network:
+        name: mariadb
         external: true
 
 volumes:
