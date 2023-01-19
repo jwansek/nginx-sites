@@ -1,1 +1,3 @@
 logger/autoLogger.conf
+logger/__pycache__/
+
