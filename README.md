@@ -16,4 +16,6 @@ Can be used to interactively setup HTTPS for the site `eda.gay`. It involves set
 
 ## TODOs
 
-- [ ] add logging in a container by using [autoLogger](https://github.com/jwansek/autoLogger)
+- [x] add logging in a container by using [autoLogger](https://github.com/jwansek/autoLogger) (done now)
+- [ ] automatically restart the nginx container or daemon after renewal]
+

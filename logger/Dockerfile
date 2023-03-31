@@ -9,5 +9,7 @@ WORKDIR /app
 RUN pip3 install -r requirements.txt
 
 RUN echo "*/2 * * * * root python3 /app/autoLogger.py > /proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
+RUN echo "@hourly root python3 /app/export.py > /proc/1/fd/1 2>/proc/1/fd/2" >> /etc/crontab
+
 ENTRYPOINT ["bash"]
 CMD ["entrypoint.sh"]

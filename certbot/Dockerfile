@@ -9,6 +9,6 @@ RUN wget https://github.com/joohoi/acme-dns-certbot-joohoi/raw/master/acme-dns-a
 RUN sed -i '1i #!/usr/bin/env python3' acme-dns-auth.py
 RUN chmod +x acme-dns-auth.py
 
-RUN echo "@monthly root certbot renew > /proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
+RUN echo "@monthly root certbot renew  --force-renewal > /proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
 ENTRYPOINT ["bash"]
 CMD ["entrypoint.sh"]

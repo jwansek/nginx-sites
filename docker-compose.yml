@@ -41,6 +41,7 @@ services:
             - letsencrypt-etc:/etc/letsencrypt/
             - ./conf.d/:/etc/nginx/conf.d/
             - ./nginx.conf:/etc/nginx/nginx.conf
+            - logs:/logs/
         # having the same networks as the nginx container is nessicary so that nginx -t can be run
         networks:
             - klaus-net
@@ -59,6 +60,7 @@ services:
         volumes:
             - logs:/logs/
             - /media/DatabaseBackups/access_logs/:/access_logs/
+            - ./logger/.oldest_dt.pickle:/app/.oldest_dt.pickle
         networks:
             - db-network
         external_links:
